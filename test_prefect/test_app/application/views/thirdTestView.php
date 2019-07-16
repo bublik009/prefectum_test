@@ -17,11 +17,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <h1>История курса за период</h1>
 Временной диапазон
 <form action="http://www.apelsun.test/index.php/test/history/" method="get">
-<lable>Начиная с:</lable>
+<lable>Начиная с (ГГГГ-ММ-ДД):</lable>
 </br>
 <input type="text" name='start'>
 </br>
-<lable>До:</lable>
+<lable>До (ГГГГ-ММ-ДД):</lable>
 </br>
 <input type="text" name='end'>
 </br>
