@@ -1,0 +1,26 @@
+DELIMITER $$
+CREATE DEFINER=`mykola`@`localhost` PROCEDURE `debtRepayment`(IN `DebtID` INT(10))
+BEGIN  
+
+
+DECLARE debtorID int(10);
+DECLARE creditorID int(10);
+DECLARE sumOfDebt double;
+
+#Определяем долг как возвращенный
+UPDATE debts SET repaid_status = 1 WHERE id = DebtID;
+
+#берем айди учасников и суму долга для манипуляций с таблицей учасников
+SET @sumOfDebt = (SELECT sum_Of_Debt FROM debts WHERE id = DebtID);
+SET @debtorID  = (SELECT debtor_id FROM debts WHERE id = DebtID);
+SET @creditorID = (SELECT creditor_id FROM debts WHERE id = DebtD);
+#обновляем баланс учасников
+UPDATE participants SET balance = balance - @sumOfDebt WHERE id = @debtorID;
+
+
+UPDATE participants SET balance = balance + @sumOfDebt WHERE id = @debtorID;
+
+
+
+END$$
+DELIMITER ;﻿

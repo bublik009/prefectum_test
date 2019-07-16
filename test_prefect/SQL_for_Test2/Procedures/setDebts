@@ -1,0 +1,36 @@
+DELIMITER $$
+CREATE DEFINER=`mykola`@`localhost` PROCEDURE `setDebts`(IN `debtor` INT, IN `creditor` INT, IN `sumOfDebt` DOUBLE, IN `endOfTerm` INT)
+BEGIN  
+
+DECLARE QueryString varchar(1000);
+
+DECLARE insertQueryString varchar(1000);
+DECLARE updateCredQueryString varchar(1000);
+DECLARE updateDebtQueryString varchar(1000);
+
+
+
+
+
+#создаем строку запроса добавления операции в таблицу долгов
+SET @insertQueryString = CONCAT('INSERT INTO debts SET debtor_id = ',debtor,', creditor_id = ',creditor,', sum_Of_Debt = ', sumOfDebt,', end_Of_Term = ',endOfTerm);
+
+#создаем строки запроса обновления баланса задеяных лиц
+SET @updateCredQueryString = CONCAT('UPDATE participants SET balance = ','balance -', sumOfDebt,' ','WHERE id = ',creditor);
+SET @updateDebtQueryString = CONCAT('UPDATE participants SET balance = ','balance +', sumOfDebt,' ','WHERE id = ',debtor);
+
+#Обьединяем строки запросов
+#SET @QueryString = CONCAT(@insertQueryString,';',  @updateCredQueryString,';', @updateDebtQueryString);
+
+#Выполняем все запросы
+PREPARE setNewDebt FROM @insertQueryString;
+EXECUTE setNewDebt;
+PREPARE setNewCredBalance FROM @updateCredQueryString;
+EXECUTE setNewCredBalance;
+PREPARE setNewDebtBalance FROM @updateDebtQueryString;
+EXECUTE setNewDebtBalance;
+
+
+
+END$$
+DELIMITER ;
